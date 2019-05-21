@@ -1,0 +1,70 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/elements/shared-styles.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<dom-module id="search-spotify">
+  <template>
+    <h1>Search Spotify</h1>
+    <iron-ajax
+      auto url = "https://accounts.spotify.com/api/token"
+      params = '{"part":"snippet", "q":"polymer", "key": "YOUTUBE_API_KEY", "type": "client_credentials"}'
+      handle-as = "json"
+      on-response = "handleResponse"
+      debounce-duration = "500">
+    </iron-ajax>
+  </template>
+  
+  <script>
+    var request = require('request'); // "Request" library
+    var client_id = 'CLIENT_ID'; // Your client id
+    var client_secret = 'CLIENT_SECRET'; // Your secret
+
+    // your application requests authorization
+    var authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      headers: {
+        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+      },
+      form: {
+        grant_type: 'client_credentials'
+      },
+      json: true
+    };
+
+    request.post(authOptions, function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+
+        // use the access token to access the Spotify Web API
+        var token = body.access_token;
+        var options = {
+          url: 'https://api.spotify.com/v1/users/jmperezperez',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          },
+          json: true
+        };
+        request.get(options, function(error, response, body) {
+          console.log(body);
+        });
+      }
+    });
+
+    
+    Polymer({
+      is: "search-spotify",
+
+      properties: {
+        cliID: {
+          type: String,
+          value: "7d6275b8d60644fab2462b21fe302853"
+        },
+        cliSecret: {
+          type: String,
+          value: "a58231b2c4b24eaaa900f62e0ab2650b"
+        }
+        
+      },
+      
+    });
+
+  </script>
+</dom-module>
