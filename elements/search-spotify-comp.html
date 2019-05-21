@@ -11,6 +11,10 @@
       on-response = "handleResponse"
       debounce-duration = "500">
     </iron-ajax>
+    <paper-input type="search" id="busqueda"  placeholder="Escribe aqui..."></paper-input>
+
+
+
   </template>
   
   <script>
@@ -36,7 +40,7 @@
         // use the access token to access the Spotify Web API
         var token = body.access_token;
         var options = {
-          url: 'https://api.spotify.com/v1/users/jmperezperez',
+          url: 'https://api.spotify.com/v1/users/thelunale',
           headers: {
             'Authorization': 'Bearer ' + token
           },
